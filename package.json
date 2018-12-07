@@ -6,7 +6,8 @@
   "types": "localization-helper.d.ts",
   "scripts": {
     "test": "npm run build && jest",
-    "build": "webpack --config webpack.config.js --mode production"
+    "build": "webpack --config webpack.config.js --mode production",
+    "build:docs": "jsdoc2md ./src/localization-helper.js > docs/reference.md"
   },
   "repository": "github:pklaschka/xd-localization-helper",
   "keywords": [
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@adobexd/typings": "git+https://github.com/AdobeXD/typings.git",
     "jest": "^23.6.0",
+    "jsdoc-to-markdown": "^4.0.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   }

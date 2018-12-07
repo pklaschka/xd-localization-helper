@@ -10,6 +10,12 @@ let lang;
 let defaultEntries = undefined;
 let languageEntries = undefined;
 
+/**
+ * @class LocalizationHelper
+ * The main LocalizationHelper class
+ * @alias module:xd-localization-helper
+ * @static
+ */
 class LocalizationHelper {
     /**
      * The currently used language
@@ -113,4 +119,8 @@ class LocalizationHelper {
     }
 }
 
+/**
+ * The xd-localization-helper module
+ * @module xd-localization-helper
+ */
 module.exports = LocalizationHelper;
