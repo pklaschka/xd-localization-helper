@@ -1,5 +1,16 @@
 # :earth_africa: xd-loacalization-helper
 
+
+[![Build Status](https://travis-ci.com/pklaschka/xd-localization-helper.svg?branch=master)](https://travis-ci.com/pklaschka/xd-localization-helper)
+[![npm version](https://badge.fury.io/js/xd-localization-helper.svg)](https://badge.fury.io/js/xd-localization-helper)
+![David](https://img.shields.io/david/pklaschka/xd-localization-helper.svg)
+
+
+[![NPM](https://nodei.co/npm/xd-storage-helper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/xd-localization-helper/)
+
+
+---
+
 WIP
 
 In your translations folder (specified when initializing the helper, defaults to `[your-plugin-folder]/lang/`), you need at least a `default.json` file for the library to work. This should include all the default strings in case no translation is provided for the actual language. This could look something like this:
