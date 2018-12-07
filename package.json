@@ -1,6 +1,6 @@
 {
   "name": "xd-localization-helper",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0",
   "description": "A library making localization for plugins for Adobe XD CC easy.",
   "main": "localization-helper.js",
   "types": "localization-helper.d.ts",
@@ -8,7 +8,7 @@
     "test": "npm run build && jest",
     "build": "webpack --config webpack.config.js --mode production"
   },
-  "repository": "github:pklaschka/xd-dialog-helper",
+  "repository": "github:pklaschka/xd-localization-helper",
   "keywords": [
     "Adobe",
     "XD",
