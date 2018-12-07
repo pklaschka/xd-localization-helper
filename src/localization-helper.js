@@ -5,12 +5,38 @@
 const fs = require('uxp').storage;
 const lfs = fs.localFileSystem;
 
-const lang = require('application').appLanguage;
+let lang;
 
-let defaultEntries = {};
-let languageEntries = {};
+let defaultEntries = undefined;
+let languageEntries = undefined;
 
 class LocalizationHelper {
+    /**
+     * The currently used language
+     * @return {string} The language code
+     */
+    static get lang() {
+        return lang;
+    }
+
+    /**
+     * Determines if the current language has a translation (in general, not for a specific key)
+     * @return {boolean} Translation exists for the current language
+     */
+    static get hasTranslation() {
+        return languageEntries !== undefined;
+    }
+
+    /**
+     * @private
+     * "Unloads" the library (with all translations)
+     */
+    static unload() {
+        lang = undefined;
+        defaultEntries = undefined;
+        languageEntries = undefined;
+    }
+
     /**
      * Initializes the helper. Must be completed before calling {@link LocalizationHelper.get}
      * @param [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
@@ -19,6 +45,10 @@ class LocalizationHelper {
      * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
+        this.unload();
+
+        lang = require('application').appLanguage;
+
         if (!translationFolderLocation)
             translationFolderLocation = 'lang';
 
@@ -46,10 +76,13 @@ class LocalizationHelper {
                 }
 
                 const usedLanguage = options.overrideLanguage ? options.overrideLanguage : lang;
+                lang = usedLanguage;
 
                 if (entries.find(entry => entry.name === usedLanguage + '.json')) {
                     const defaultFile = await translationFolder.getEntry(usedLanguage + '.json');
                     languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
+                } else {
+                    languageEntries = undefined
                 }
 
                 return true;
@@ -68,12 +101,14 @@ class LocalizationHelper {
      * @throws An error if neither a translation nor a default value for the key are specified
      */
     static get(key) {
-        if (languageEntries.hasOwnProperty(key)) {
+        if (languageEntries && languageEntries.hasOwnProperty(key)) {
             return languageEntries[key];
-        } else if (defaultEntries.hasOwnProperty(key)) {
+        } else if (!defaultEntries)
+            throw 'Localization helper: The library wasn\'t initialized. Please use \'LocalizationHelper.load()\' before getting a string.';
+        else if (defaultEntries.hasOwnProperty(key)) {
             return defaultEntries[key];
         } else {
-            throw 'Localization helper: Unspecified string key: ' + key;
+            throw 'Localization helper: Unspecified string key: \'' + key + '\'';
         }
     }
 }
