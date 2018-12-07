@@ -5,3 +5,7 @@ tests
 coverage
 src
 webpack.config.js
+.github
+PULL_REQUEST_TEMPLATE.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
