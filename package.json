@@ -1,6 +1,6 @@
 {
   "name": "xd-localization-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library making localization for plugins for Adobe XD CC easy.",
   "main": "localization-helper.js",
   "types": "localization-helper.d.ts",
