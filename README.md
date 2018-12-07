@@ -6,7 +6,7 @@
 ![David](https://img.shields.io/david/pklaschka/xd-localization-helper.svg)
 
 
-[![NPM](https://nodei.co/npm/xd-storage-helper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/xd-localization-helper/)
+[![NPM](https://nodei.co/npm/xd-localization-helper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/xd-localization-helper/)
 
 
 ---
