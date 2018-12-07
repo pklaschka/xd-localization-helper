@@ -1,53 +1,42 @@
-## Modules
-
-<dl>
-<dt><a href="#module_xd-localization-helper">xd-localization-helper</a></dt>
-<dd><p>The xd-localization-helper module</p>
-</dd>
-</dl>
-
 <a name="module_xd-localization-helper"></a>
 
 ## xd-localization-helper
 The xd-localization-helper module
 
-<a name="LocalizationHelper"></a>
 
-## .LocalizationHelper
-**Kind**: static class  
+* [xd-localization-helper](#module_xd-localization-helper)
+    * [LocalizationHelper](#exp_module_xd-localization-helper--LocalizationHelper) ⏏
+        * [.lang](#module_xd-localization-helper--LocalizationHelper.lang) ⇒ <code>string</code>
+        * [.hasTranslation](#module_xd-localization-helper--LocalizationHelper.hasTranslation) ⇒ <code>boolean</code>
+        * [.load([translationFolderLocation], [config])](#module_xd-localization-helper--LocalizationHelper.load) ⇒ <code>Promise.&lt;boolean&gt;</code>
+        * [.get(key)](#module_xd-localization-helper--LocalizationHelper.get) ⇒ <code>string</code>
 
-* [.LocalizationHelper](#LocalizationHelper)
-    * [new LocalizationHelper()](#new_LocalizationHelper_new)
-    * [.lang](#LocalizationHelper.lang) ⇒ <code>string</code>
-    * [.hasTranslation](#LocalizationHelper.hasTranslation) ⇒ <code>boolean</code>
-    * [.load([translationFolderLocation], [config])](#LocalizationHelper.load) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * [.get(key)](#LocalizationHelper.get) ⇒ <code>string</code>
+<a name="exp_module_xd-localization-helper--LocalizationHelper"></a>
 
-<a name="new_LocalizationHelper_new"></a>
+### LocalizationHelper ⏏
+LocalizationHelperThe main LocalizationHelper class
 
-### new LocalizationHelper()
-The main LocalizationHelper class
+**Kind**: global class of [<code>xd-localization-helper</code>](#module_xd-localization-helper)  
+<a name="module_xd-localization-helper--LocalizationHelper.lang"></a>
 
-<a name="LocalizationHelper.lang"></a>
-
-### LocalizationHelper.lang ⇒ <code>string</code>
+#### LocalizationHelper.lang ⇒ <code>string</code>
 The currently used language
 
-**Kind**: static property of [<code>LocalizationHelper</code>](#LocalizationHelper)  
+**Kind**: static property of [<code>LocalizationHelper</code>](#exp_module_xd-localization-helper--LocalizationHelper)  
 **Returns**: <code>string</code> - The language code  
-<a name="LocalizationHelper.hasTranslation"></a>
+<a name="module_xd-localization-helper--LocalizationHelper.hasTranslation"></a>
 
-### LocalizationHelper.hasTranslation ⇒ <code>boolean</code>
+#### LocalizationHelper.hasTranslation ⇒ <code>boolean</code>
 Determines if the current language has a translation (in general, not for a specific key)
 
-**Kind**: static property of [<code>LocalizationHelper</code>](#LocalizationHelper)  
+**Kind**: static property of [<code>LocalizationHelper</code>](#exp_module_xd-localization-helper--LocalizationHelper)  
 **Returns**: <code>boolean</code> - Translation exists for the current language  
-<a name="LocalizationHelper.load"></a>
+<a name="module_xd-localization-helper--LocalizationHelper.load"></a>
 
-### LocalizationHelper.load([translationFolderLocation], [config]) ⇒ <code>Promise.&lt;boolean&gt;</code>
-Initializes the helper. Must be completed before calling [get](#LocalizationHelper.get)
+#### LocalizationHelper.load([translationFolderLocation], [config]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+Initializes the helper. Must be completed before calling [LocalizationHelper.get](LocalizationHelper.get)
 
-**Kind**: static method of [<code>LocalizationHelper</code>](#LocalizationHelper)  
+**Kind**: static method of [<code>LocalizationHelper</code>](#exp_module_xd-localization-helper--LocalizationHelper)  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - Promise that resolves when the translations loaded successfully (resolves to true if it was successful)  
 
 | Param | Type | Default | Description |
@@ -56,12 +45,12 @@ Initializes the helper. Must be completed before calling [get](#LocalizationHelp
 | [config] | <code>Object</code> |  | Further configuration |
 | [config.overrideLanguage] | <code>string</code> | <code>null</code> | Overrides the language (to use another translation instead of the app's UI language) |
 
-<a name="LocalizationHelper.get"></a>
+<a name="module_xd-localization-helper--LocalizationHelper.get"></a>
 
-### LocalizationHelper.get(key) ⇒ <code>string</code>
+#### LocalizationHelper.get(key) ⇒ <code>string</code>
 Gets the correct string for a key
 
-**Kind**: static method of [<code>LocalizationHelper</code>](#LocalizationHelper)  
+**Kind**: static method of [<code>LocalizationHelper</code>](#exp_module_xd-localization-helper--LocalizationHelper)  
 **Returns**: <code>string</code> - The correct translation or the default value for the key  
 **Throws**:
 

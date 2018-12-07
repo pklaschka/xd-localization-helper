@@ -10,11 +10,13 @@ let lang;
 let defaultEntries = undefined;
 let languageEntries = undefined;
 
+// eslint-disable-next-line valid-jsdoc
 /**
- * The main LocalizationHelper class
  * @class LocalizationHelper
+ * The main LocalizationHelper class
  * @alias module:xd-localization-helper
  * @static
+ * @hideconstructor
  */
 class LocalizationHelper {
     /**
