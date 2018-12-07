@@ -87,7 +87,7 @@ class LocalizationHelper {
                     const defaultFile = await translationFolder.getEntry(lang + '.json');
                     languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
                 } else {
-                    languageEntries = undefined
+                    languageEntries = undefined;
                 }
 
                 return true;
