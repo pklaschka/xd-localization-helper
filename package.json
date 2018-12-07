@@ -1,0 +1,44 @@
+{
+  "name": "xd-localization-helper",
+  "version": "1.0.0",
+  "description": "A library making localization for plugins for Adobe XD CC easy.",
+  "main": "localization-helper.js",
+  "scripts": {
+    "test": "build && jest",
+    "build": "webpack --config webpack.config.js --mode production"
+  },
+  "repository": "github:pklaschka/xd-dialog-helper",
+  "keywords": [
+    "Adobe",
+    "XD",
+    "dialog",
+    "plugins",
+    "localization",
+    "internationalization",
+    "dialog"
+  ],
+  "author": {
+    "name": "Pablo Klaschka",
+    "url": "https://github.com/pklaschka",
+    "email": "xdplugins@pabloklaschka.de"
+  },
+  "contributors": [
+    {
+      "name": "Pablo Klaschka",
+      "url": "https://github.com/pklaschka",
+      "email": "xdplugins@pabloklaschka.de"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pklaschka/xd-localization-helper/issues",
+    "email": "xdplugins@pabloklaschka.de"
+  },
+  "homepage": "https://github.com/pklaschka/xd-localization-helper#readme",
+  "devDependencies": {
+    "@adobexd/typings": "git+https://github.com/AdobeXD/typings.git",
+    "jest": "^23.6.0",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  }
+}
