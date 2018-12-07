@@ -152,6 +152,24 @@ describe('get()', () => {
         done();
     });
 
+    test('Correct key, forced translated language => translated string', async done => {
+        mockApp.appLanguage = 'fr';
+        const loc = require('../localization-helper');
+        await loc.load('lang', {overrideLanguage: 'de'});
+        expect(loc.lang).toBe('de');
+        expect(loc.get('a')).toBe('Hallo Welt');
+        done();
+    });
+
+    test('Correct key, forced non-translated language => default string', async done => {
+        mockApp.appLanguage = 'fr';
+        const loc = require('../localization-helper');
+        await loc.load('lang', {overrideLanguage: 'aa'});
+        expect(loc.lang).toBe('aa');
+        expect(loc.get('a')).toBe('Hello World');
+        done();
+    });
+
     test('Correct key, non-translated language => default string', async done => {
         mockApp.appLanguage = 'fr';
         const loc = require('../localization-helper');

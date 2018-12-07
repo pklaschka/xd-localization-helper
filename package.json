@@ -5,7 +5,7 @@
   "main": "localization-helper.js",
   "types": "localization-helper.d.ts",
   "scripts": {
-    "test": "npm run build && jest",
+    "test": "npm run build && jest --coverage",
     "build": "webpack --config webpack.config.js --mode production",
     "build:docs": "jsdoc2md ./src/localization-helper.js > docs/reference.md"
   },

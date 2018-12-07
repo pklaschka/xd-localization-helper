@@ -81,11 +81,10 @@ class LocalizationHelper {
                     throw 'no default.json file was found...';
                 }
 
-                const usedLanguage = options.overrideLanguage ? options.overrideLanguage : lang;
-                lang = usedLanguage;
+                lang = options.overrideLanguage ? options.overrideLanguage : lang;
 
-                if (entries.find(entry => entry.name === usedLanguage + '.json')) {
-                    const defaultFile = await translationFolder.getEntry(usedLanguage + '.json');
+                if (entries.find(entry => entry.name === lang + '.json')) {
+                    const defaultFile = await translationFolder.getEntry(lang + '.json');
                     languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
                 } else {
                     languageEntries = undefined
