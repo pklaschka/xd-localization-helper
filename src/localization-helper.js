@@ -13,10 +13,10 @@ let languageEntries = {};
 class LocalizationHelper {
     /**
      * Initializes the helper. Must be completed before calling {@link LocalizationHelper.get}
-     * @param [translationFolderLocation='lang'] The translation folder location (relative to the plugin folder)
+     * @param [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
      * @param [config] Further configuration
      * @param [config.overrideLanguage=null] Overrides the language (to use another translation instead of the app's UI language)
-     * @return {Promise<void>} Promise that resolves when the translations loaded successfully
+     * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
         if (!translationFolderLocation)
@@ -25,10 +25,14 @@ class LocalizationHelper {
         let options = {
             overrideLanguage: null,
         };
-        Object.assign(options, config);
+        options = Object.assign(options, config || {});
 
         try {
             const pluginFolder = await lfs.getPluginFolder();
+
+            if (!(await pluginFolder.getEntries()).find(entry => entry.name === translationFolderLocation))
+                throw 'translationFolderLocation \'' + translationFolderLocation + '\' doesn\'t exist';
+
             const translationFolder = await pluginFolder.getEntry(translationFolderLocation);
 
             if (translationFolder.isFolder) {
@@ -38,17 +42,19 @@ class LocalizationHelper {
                     const defaultFile = await translationFolder.getEntry('default.json');
                     defaultEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
                 } else {
-                    throw 'Localization helper: NO default.json file was found...';
+                    throw 'no default.json file was found...';
                 }
 
-                const usedLanguage = config.overrideLanguage ? config.overrideLanguage : lang;
+                const usedLanguage = options.overrideLanguage ? options.overrideLanguage : lang;
 
                 if (entries.find(entry => entry.name === usedLanguage + '.json')) {
                     const defaultFile = await translationFolder.getEntry(usedLanguage + '.json');
                     languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
                 }
+
+                return true;
             } else {
-                throw 'Localization helper: translationFolderLocation is not a folder';
+                throw 'translationFolderLocation \'' + translationFolderLocation + '\' is not a folder';
             }
         } catch (e) {
             throw 'Localization helper: Translations didn\'t load successfully: ' + e;
