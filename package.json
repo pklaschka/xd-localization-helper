@@ -7,7 +7,8 @@
   "scripts": {
     "test": "npm run build && jest --coverage",
     "build": "webpack --config webpack.config.js --mode production",
-    "build:docs": "jsdoc2md ./src/localization-helper.js > docs/reference.md"
+    "build:docs": "jsdoc2md ./src/localization-helper.js > docs/reference.md",
+    "lint": "eslint src/localization-helper.js"
   },
   "repository": "github:pklaschka/xd-localization-helper",
   "keywords": [
@@ -39,6 +40,7 @@
   "homepage": "https://github.com/pklaschka/xd-localization-helper#readme",
   "devDependencies": {
     "@adobexd/typings": "git+https://github.com/AdobeXD/typings.git",
+    "eslint": "^5.9.0",
     "jest": "^23.6.0",
     "jsdoc-to-markdown": "^4.0.1",
     "webpack": "^4.27.1",
