@@ -41,7 +41,8 @@ class MockFolder {
     async getEntries() {
         let returnArray = [];
         for (let key in this.files)
-            returnArray.push(this.files[key]);
+            if (this.files.hasOwnProperty(key))
+                returnArray.push(this.files[key]);
         return returnArray;
     }
 

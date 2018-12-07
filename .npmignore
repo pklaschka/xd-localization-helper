@@ -3,3 +3,5 @@ sample
 .vscode
 tests
 coverage
+src
+webpack.config.js
