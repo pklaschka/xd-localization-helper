@@ -62,8 +62,8 @@ class MockFolder {
 
 let mockPluginFolder = new MockFolder('plugins', {
     lang: new MockFolder('lang', {
-        "default.json": new MockFile('default.json', '{"a":"Hello World"}'),
-        "de.json": new MockFile('de.json', '{"a":"Hallo Welt"}'),
+        'default.json': new MockFile('default.json', '{"a":"Hello World"}'),
+        'de.json': new MockFile('de.json', '{"a":"Hallo Welt"}'),
     })
 });
 jest.mock('uxp', () => {
@@ -78,7 +78,7 @@ jest.mock('uxp', () => {
                 }
             }
         }
-    }
+    };
 }, {virtual: true});
 
 let mockApp = {
@@ -113,7 +113,7 @@ describe('Initializing', () => {
     test('throw if there\'s no default.json', async done => {
         mockPluginFolder = new MockFolder('plugins', {
             lang: new MockFolder('lang', {
-                "de.json": new MockFile('de.json', '{"a":"Hallo Welt"}'),
+                'de.json': new MockFile('de.json', '{"a":"Hallo Welt"}'),
             })
         });
 
@@ -137,8 +137,8 @@ describe('get()', () => {
     beforeEach(() => {
         mockPluginFolder = new MockFolder('plugins', {
             lang: new MockFolder('lang', {
-                "default.json": new MockFile('default.json', '{"a":"Hello World"}'),
-                "de.json": new MockFile('de.json', '{"a":"Hallo Welt"}'),
+                'default.json': new MockFile('default.json', '{"a":"Hello World"}'),
+                'de.json': new MockFile('de.json', '{"a":"Hallo Welt"}'),
             })
         });
         mockApp.appLanguage = 'de';

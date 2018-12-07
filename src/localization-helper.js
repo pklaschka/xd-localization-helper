@@ -11,8 +11,8 @@ let defaultEntries = undefined;
 let languageEntries = undefined;
 
 /**
- * @class LocalizationHelper
  * The main LocalizationHelper class
+ * @class LocalizationHelper
  * @alias module:xd-localization-helper
  * @static
  */
@@ -36,6 +36,7 @@ class LocalizationHelper {
     /**
      * @private
      * "Unloads" the library (with all translations)
+     * @return {void}
      */
     static unload() {
         lang = undefined;
@@ -45,9 +46,9 @@ class LocalizationHelper {
 
     /**
      * Initializes the helper. Must be completed before calling {@link LocalizationHelper.get}
-     * @param [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
-     * @param [config] Further configuration
-     * @param [config.overrideLanguage=null] Overrides the language (to use another translation instead of the app's UI language)
+     * @param {string} [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
+     * @param {Object} [config] Further configuration
+     * @param {string?} [config.overrideLanguage=null] Overrides the language (to use another translation instead of the app's UI language)
      * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
@@ -101,7 +102,7 @@ class LocalizationHelper {
 
     /**
      * Gets the correct string for a key
-     * @param key The key of the string
+     * @param {string} key The key of the string
      * @return {string} The correct translation or the default value for the key
      * @throws An error if neither a translation nor a default value for the key are specified
      */
