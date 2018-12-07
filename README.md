@@ -11,9 +11,19 @@
 
 ---
 
-WIP
+A helper library making localization or internationalization of plugins for Adobe XD CC much easier.
 
-In your translations folder (specified when initializing the helper, defaults to `[your-plugin-folder]/lang/`), you need at least a `default.json` file for the library to work. This should include all the default strings in case no translation is provided for the actual language. This could look something like this:
+### Usage
+
+#### Including the library
+
+First, you'll need to include the library. This can be done in two ways:
+1. If you use a bundler like webpack and a package manager like npm, you can simply run `npm i xd-localization-helper` and get a reference to the helper by using `const loc = require('xd-localization-helper');` in your JS.
+2. If you don't use webpack and npm, you can also include the `localization-helper.js` file from the latest [release](https://github.com/pklaschka/xd-localization-helper/releases) in your project and get a reference to the helper by using `const loc = require('./localization-helper')`.
+
+#### Folder structure (the translations)
+
+In your translations folder (which must be a direct subfolder of your plugin folder) specified when initializing the helper, defaults to `lang/`, you need at least a `default.json` file for the library to work (if it's not there, `LocalizationHelper.load()` will reject). This should include all the default strings in case no translation is provided for the actual language. This could look something like this:
 
 ```json
 {
@@ -34,7 +44,6 @@ To provide an example, we'll use German translations here (since German is the o
     "mainDialog.cancelBtnText": "Abbrechen"
 }
 ```
-
 Likewise, a french translation would be a file called `fr.json` etc.:
 
 ```json
@@ -45,7 +54,9 @@ Likewise, a french translation would be a file called `fr.json` etc.:
 }
 ```
 
-In your JavaScript code, you first have to initialize the helper. Since we've chose the default folder `lang` here, we simply achieve this by calling the asynchronous function `load()`:
+#### JavaScript
+
+In your JavaScript code, you first have to initialize the helper. Since we've put our JSON files into the default folder `lang` in this example, we simply achieve this by calling the asynchronous function `LocalizationHelper.load()`:
 
 ```javascript
 const loc = require('xd-localization-helper');
@@ -55,4 +66,10 @@ async function initialize() {
 }
 ```
 
-After that, we can simply get the correct translation by using `loc.get(key)`. For example, `loc.get('mainDialog.okBtnText')` would return `'Einfügen'` in a German environment, `'Insérez'` on a french OS and `'Insert'` on every other environment. Of course, you can specify as many translations as you'd like.
+This `load()` function returns a Promise which resolves when it loaded successfully and rejects with a message informing you about what you did wrong in case something isn't correct (e.g., if there's no folder for the translations or no `default.json` exists).
+
+After that, you can simply get the correct translation by using `loc.get(key)`. For example, `loc.get('mainDialog.okBtnText')` would return `'Einfügen'` in a German environment, `'Insérez'` on a french OS and `'Insert'` on every other environment. Of course, you can specify as many translations as you'd like.
+
+### Further information
+
+You can find further information (like usage examples, a full reference of the available functions and configuration options etc.) in the [repo's wiki](https://github.com/pklaschka/xd-localization-helper/wiki).
