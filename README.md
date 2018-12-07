@@ -3,7 +3,6 @@
 
 [![Build Status](https://travis-ci.com/pklaschka/xd-localization-helper.svg?branch=master)](https://travis-ci.com/pklaschka/xd-localization-helper)
 [![npm version](https://badge.fury.io/js/xd-localization-helper.svg)](https://badge.fury.io/js/xd-localization-helper)
-![David](https://img.shields.io/david/pklaschka/xd-localization-helper.svg)
 
 
 [![NPM](https://nodei.co/npm/xd-localization-helper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/xd-localization-helper/)
