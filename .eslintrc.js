@@ -23,6 +23,7 @@ module.exports = {
             "always"
         ],
         "no-console": "error",
-        "valid-jsdoc": "error"
+        "valid-jsdoc": "error",
+        "max-len": ["error", { "code": 120 }]
     }
 };

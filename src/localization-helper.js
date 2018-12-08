@@ -50,8 +50,10 @@ class LocalizationHelper {
      * Initializes the helper. Must be completed before calling {@link LocalizationHelper.get}
      * @param {?string} [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
      * @param {?Object} [config] Further configuration
-     * @param {?string} [config.overrideLanguage=null] Overrides the language (to use another translation instead of the app's UI language)
-     * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
+     * @param {?string} [config.overrideLanguage=null] Overrides the language (to use another translation
+     * instead of the app's UI language)
+     * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully
+     * (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
         LocalizationHelper.unload();
@@ -83,7 +85,8 @@ class LocalizationHelper {
                     const defaultFile = await translationFolder.getEntry('default.json');
                     defaultEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
                 } else {
-                    throw 'no default.json file was found...';
+                    throw 'required default.json file not available in the ' +
+                    'translation folder \''+translationFolderLocation+'\'...';
                 }
 
                 if (entries.find(entry => entry.name === lang + '.json')) {
@@ -110,11 +113,12 @@ class LocalizationHelper {
         if (languageEntries && languageEntries.hasOwnProperty(key)) {
             return languageEntries[key];
         } else if (!defaultEntries)
-            throw 'Localization helper: The library wasn\'t initialized. Please use \'LocalizationHelper.load()\' before getting a string.';
+            throw 'Localization helper: The library wasn\'t initialized. Please use \'await ' +
+            'LocalizationHelper.load()\' before getting a string.';
         else if (defaultEntries.hasOwnProperty(key)) {
             return defaultEntries[key];
         } else {
-            throw 'Localization helper: Unspecified string key: \'' + key + '\'';
+            throw 'Localization helper: String was not found, key: \'' + key + '\'';
         }
     }
 }

@@ -108,7 +108,8 @@ describe('Initializing', () => {
 
     test('throw with a wrong translations folder name', async done => {
         const loc = require(locationHelperLocation);
-        await expect(loc.load('langsTypo')).rejects.toMatch('Localization helper: Translations didn\'t load successfully: translationFolderLocation \'langsTypo\' doesn\'t exist');
+        await expect(loc.load('langsTypo')).rejects.toMatch('Localization helper: Translations didn\'t ' +
+            'load successfully: translationFolderLocation \'langsTypo\' doesn\'t exist');
         done();
     });
 
@@ -120,7 +121,8 @@ describe('Initializing', () => {
         });
 
         const loc = require(locationHelperLocation);
-        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: no default.json file was found...');
+        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: ' +
+            'required default.json file not available in the translation folder \'lang\'...');
         done();
     });
 
@@ -130,7 +132,8 @@ describe('Initializing', () => {
         });
 
         const loc = require(locationHelperLocation);
-        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: translationFolderLocation \'lang\' is not a folder');
+        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: ' +
+            'translationFolderLocation \'lang\' is not a folder');
         done();
     });
 });
@@ -186,13 +189,14 @@ describe('get()', () => {
     test('Not initialized => throw error', () => {
         const loc = require(locationHelperLocation);
         loc.unload();
-        expect(() => loc.get('a')).toThrow('Localization helper: The library wasn\'t initialized. Please use \'LocalizationHelper.load()\' before getting a string.');
+        expect(() => loc.get('a')).toThrow('Localization helper: The library wasn\'t initialized. Please use ' +
+            '\'await LocalizationHelper.load()\' before getting a string.');
     });
 
     test('Incorrect key => throw error', async done => {
         const loc = require(locationHelperLocation);
         await loc.load();
-        expect(() => loc.get('b')).toThrow('Localization helper: Unspecified string key: \'b\'');
+        expect(() => loc.get('b')).toThrow('Localization helper: String was not found, key: \'b\'');
         done();
     });
 });
