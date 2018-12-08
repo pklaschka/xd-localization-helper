@@ -25,6 +25,8 @@ class MockFile {
     }
 }
 
+const locationHelperLocation = '../localization-helper';
+
 class MockFolder {
     constructor(name, files) {
         this.files = files;
@@ -92,20 +94,20 @@ jest.mock('application', () => {
 
 describe('Initializing', () => {
     test('be successful with a correct setup', async done => {
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await expect(loc.load()).resolves.toBeTruthy();
         done();
     });
 
     test('be successful without correct translations', async done => {
         mockApp.appLanguage = 'fr';
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await expect(loc.load()).resolves.toBeTruthy();
         done();
     });
 
     test('throw with a wrong translations folder name', async done => {
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await expect(loc.load('langsTypo')).rejects.toMatch('Localization helper: Translations didn\'t load successfully: translationFolderLocation \'langsTypo\' doesn\'t exist');
         done();
     });
@@ -117,7 +119,7 @@ describe('Initializing', () => {
             })
         });
 
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: no default.json file was found...');
         done();
     });
@@ -127,7 +129,7 @@ describe('Initializing', () => {
             lang: new MockFile('lang', 'some stuff')
         });
 
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: translationFolderLocation \'lang\' is not a folder');
         done();
     });
@@ -145,7 +147,7 @@ describe('get()', () => {
     });
 
     test('Correct key, translated language => translated string', async done => {
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('de');
         expect(loc.get('a')).toBe('Hallo Welt');
@@ -154,16 +156,17 @@ describe('get()', () => {
 
     test('Correct key, forced translated language => translated string', async done => {
         mockApp.appLanguage = 'fr';
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await loc.load('lang', {overrideLanguage: 'de'});
         expect(loc.lang).toBe('de');
         expect(loc.get('a')).toBe('Hallo Welt');
+        expect(loc.hasTranslation).toBe(true);
         done();
     });
 
     test('Correct key, forced non-translated language => default string', async done => {
         mockApp.appLanguage = 'fr';
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await loc.load('lang', {overrideLanguage: 'aa'});
         expect(loc.lang).toBe('aa');
         expect(loc.get('a')).toBe('Hello World');
@@ -172,21 +175,22 @@ describe('get()', () => {
 
     test('Correct key, non-translated language => default string', async done => {
         mockApp.appLanguage = 'fr';
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('fr');
         expect(loc.get('a')).toBe('Hello World');
+        expect(loc.hasTranslation).toBe(false);
         done();
     });
 
     test('Not initialized => throw error', () => {
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         loc.unload();
         expect(() => loc.get('a')).toThrow('Localization helper: The library wasn\'t initialized. Please use \'LocalizationHelper.load()\' before getting a string.');
     });
 
     test('Incorrect key => throw error', async done => {
-        const loc = require('../localization-helper');
+        const loc = require(locationHelperLocation);
         await loc.load();
         expect(() => loc.get('b')).toThrow('Localization helper: Unspecified string key: \'b\'');
         done();

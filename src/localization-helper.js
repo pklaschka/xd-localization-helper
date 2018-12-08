@@ -54,18 +54,20 @@ class LocalizationHelper {
      * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
-        this.unload();
+        LocalizationHelper.unload();
 
         lang = require('application').appLanguage;
 
-        if (!translationFolderLocation)
-            translationFolderLocation = 'lang';
+        // Dealing with parameters
+        translationFolderLocation = translationFolderLocation || 'lang';
 
-        let options = {
+        let options = Object.assign({
             overrideLanguage: null,
-        };
-        options = Object.assign(options, config || {});
+        }, config || {});
 
+        lang = options.overrideLanguage ? options.overrideLanguage : lang;
+
+        // Actual logic
         try {
             const pluginFolder = await lfs.getPluginFolder();
 
@@ -84,13 +86,9 @@ class LocalizationHelper {
                     throw 'no default.json file was found...';
                 }
 
-                lang = options.overrideLanguage ? options.overrideLanguage : lang;
-
                 if (entries.find(entry => entry.name === lang + '.json')) {
                     const defaultFile = await translationFolder.getEntry(lang + '.json');
                     languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
-                } else {
-                    languageEntries = undefined;
                 }
 
                 return true;
