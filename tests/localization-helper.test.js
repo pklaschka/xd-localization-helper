@@ -25,7 +25,7 @@ class MockFile {
     }
 }
 
-const locationHelperLocation = '../localization-helper';
+const locationHelperLocation = '../src/localization-helper';
 
 class MockFolder {
     constructor(name, files) {
