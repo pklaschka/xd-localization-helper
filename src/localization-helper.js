@@ -102,7 +102,7 @@ class LocalizationHelper {
 
     /**
      * Gets the correct string for a key
-     * @param {string} key The key of the string
+     * @param {!string} key The key of the string
      * @return {string} The correct translation or the default value for the key
      * @throws An error if neither a translation nor a default value for the key are specified
      */

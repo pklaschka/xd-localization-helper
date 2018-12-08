@@ -1,8 +1,11 @@
 # :earth_africa: xd-loacalization-helper
 
-
 [![Build Status](https://travis-ci.com/pklaschka/xd-localization-helper.svg?branch=master)](https://travis-ci.com/pklaschka/xd-localization-helper)
 [![npm version](https://badge.fury.io/js/xd-localization-helper.svg)](https://badge.fury.io/js/xd-localization-helper)
+[![GitHub Release Date](https://img.shields.io/github/release-date/pklaschka/xd-localization-helper.svg)](https://github.com/pklaschka/xd-localization-helper/releases)
+[![GitHub](https://img.shields.io/github/license/pklaschka/xd-localization-helper.svg)](https://github.com/pklaschka/xd-localization-helper/blob/master/LICENSE)
+[![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/xd-localization-helper.svg)](https://www.npmjs.com/package/xd-localization-helper)
+
 
 
 [![NPM](https://nodei.co/npm/xd-localization-helper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/xd-localization-helper/)
