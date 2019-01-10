@@ -104,19 +104,39 @@ class LocalizationHelper {
     }
 
     /**
+     * @private
+     * Fetches a string from a parsed JSON object, may it be namespaced or flat
+     * @param {Object} object The parsed JSON object
+     * @param {string} key The key of the string
+     * @return {boolean | string} The value or false if it's not defined
+     */
+    static getNamespaced(object, key) {
+        if (object.hasOwnProperty(key))
+            return object[key];
+        else {
+            for (let i = 1; i <= key.split('.').length + 1; i++) {
+                let newKey = key.split('.', i).join('.');
+                if (object.hasOwnProperty(newKey))
+                    return this.getNamespaced(object[newKey], key.substring(newKey.length + 1, key.length));
+            }
+            return false;
+        }
+    }
+
+    /**
      * Gets the correct string for a key
      * @param {!string} key The key of the string
      * @return {string} The correct translation or the default value for the key
      * @throws An error if neither a translation nor a default value for the key are specified
      */
     static get(key) {
-        if (languageEntries && languageEntries.hasOwnProperty(key)) {
-            return languageEntries[key];
+        if (languageEntries && this.getNamespaced(languageEntries, key)) {
+            return this.getNamespaced(languageEntries, key);
         } else if (!defaultEntries)
             throw 'Localization helper: The library wasn\'t initialized. Please use \'await ' +
             'LocalizationHelper.load()\' before getting a string.';
-        else if (defaultEntries.hasOwnProperty(key)) {
-            return defaultEntries[key];
+        else if (this.getNamespaced(defaultEntries, key)) {
+            return this.getNamespaced(defaultEntries, key);
         } else {
             throw 'Localization helper: String was not found, key: \'' + key + '\'';
         }

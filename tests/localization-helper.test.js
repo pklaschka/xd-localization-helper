@@ -200,3 +200,40 @@ describe('get()', () => {
         done();
     });
 });
+
+describe('Namespacing inside the JSON file', () => {
+    beforeEach(() => {
+        mockPluginFolder = new MockFolder('plugins', {
+            lang: new MockFolder('lang', {
+                'default.json': new MockFile('default.json', '{"a.b":"String 1", ' +
+                    '"a": {"c": "String 2", "d": {"e":"String 3"}}}')
+            })
+        });
+        mockApp.appLanguage = 'de';
+    });
+
+    test('Flat namespace', async done => {
+        const loc = require(locationHelperLocation);
+        await loc.load();
+        expect(loc.lang).toBe('de');
+        expect(loc.get('a.b')).toBe('String 1');
+        done();
+    });
+
+    test('Indented namespace level 1', async done => {
+        const loc = require(locationHelperLocation);
+        await loc.load();
+        expect(loc.lang).toBe('de');
+        expect(loc.get('a.c')).toBe('String 2');
+        done();
+    });
+
+    test('Indented namespace level 2', async done => {
+        const loc = require(locationHelperLocation);
+        await loc.load();
+        expect(loc.lang).toBe('de');
+        expect(loc.get('a.d.e')).toBe('String 3');
+        expect(() => loc.get('a.c.d.e')).toThrow('Localization helper: String was not found, key: \'a.c.d.e\'');
+        done();
+    });
+});

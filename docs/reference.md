@@ -37,7 +37,7 @@ Determines if the current language has a translation (in general, not for a spec
 Initializes the helper. Must be completed before calling [LocalizationHelper.get](LocalizationHelper.get)
 
 **Kind**: static method of [<code>LocalizationHelper</code>](#exp_module_xd-localization-helper--LocalizationHelper)  
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - Promise that resolves when the translations loaded successfully (resolves to true if it was successful)  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - Promise that resolves when the translations loaded successfully(resolves to true if it was successful)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
