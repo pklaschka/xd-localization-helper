@@ -66,7 +66,7 @@ Likewise, a french translation would be a file called `fr.json` etc.:
 }
 ```
 
-#### Namespaced JSON
+#### Namespaced translations
 Alternatively, you can also namespace your JSON with actual child objects instead of dots in the names. Therefore, 
 instead of writing 
 
