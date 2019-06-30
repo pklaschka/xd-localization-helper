@@ -8,45 +8,40 @@
  */
 declare module 'xd-localization-helper' {
     /**
-     * @class LocalizationHelper
-     * The main LocalizationHelper class
-     * @alias module:xd-localization-helper
-     * @static
-     * @hideconstructor
+     * The currently used language
      */
-    export default class LocalizationHelper {
-        /**
-         * The currently used language
-         */
-        static readonly lang: string;
+    const lang: string;
 
 
-        /**
-         * Determines if the current language has a translation (in general, not for a specific key)
-         */
-        static readonly hasTranslation: boolean;
+    /**
+     * Determines if the current language has a translation (in general, not for a specific key)
+     */
+    const hasTranslation: boolean;
 
-        /**
-         * @private
-         * "Unloads" the library (with all translations)
-         */
-        private static unload(): void;
+    /**
+     * @private
+     * "Unloads" the library (with all translations)
+     */
+    function unload(): void;
 
+    /**
+     * Initializes the helper. Must be completed before calling {@link get}
+     * @param {?string} [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
+     * @param config Additional configuration options
+     * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
+     */
+    function load(translationFolderLocation?: string, config?: {
         /**
-         * Initializes the helper. Must be completed before calling {@link LocalizationHelper.get}
-         * @param {?string} [translationFolderLocation='lang'] The translation folder name (in the plugin folder)
-         * @param {?object} [config] Further configuration
-         * @param {?string} [config.overrideLanguage=null] Overrides the language (to use another translation instead of the app's UI language)
-         * @return {Promise<boolean>} Promise that resolves when the translations loaded successfully (resolves to true if it was successful)
+         * Overrides the language (to use another translation instead of the app's UI language)
          */
-        public static load(translationFolderLocation?: string, config?: object): Promise<boolean>;
+        overrideLanguage?: string;
+    }): Promise<boolean>;
 
-        /**
-         * Gets the correct string for a key
-         * @param key The key of the string
-         * @return {string} The correct translation or the default value for the key
-         * @throws An error if neither a translation nor a default value for the key are specified
-         */
-        static get(key:string):string;
-    }
+    /**
+     * Gets the correct string for a key
+     * @param key The key of the string
+     * @return {string} The correct translation or the default value for the key
+     * @throws An error if neither a translation nor a default value for the key are specified
+     */
+    function get(key: string): string;
 }
