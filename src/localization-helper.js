@@ -111,12 +111,12 @@ class LocalizationHelper {
      * @return {boolean | string} The value or false if it's not defined
      */
     static getNamespaced(object, key) {
-        if (object.hasOwnProperty(key))
+        if (Object.prototype.hasOwnProperty.call(object, key))
             return object[key];
         else {
             for (let i = 1; i <= key.split('.').length + 1; i++) {
                 let newKey = key.split('.', i).join('.');
-                if (object.hasOwnProperty(newKey))
+                if (Object.prototype.hasOwnProperty.call(object, newKey))
                     return this.getNamespaced(object[newKey], key.substring(newKey.length + 1, key.length));
             }
             return false;
