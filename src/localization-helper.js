@@ -100,20 +100,8 @@ class LocalizationHelper {
     static async loadTranslations(translationFolder) {
         if (translationFolder.isFolder) {
             const translationFolderFiles = await translationFolder.getEntries();
-
-            if (translationFolderFiles.find(entry => entry.name === 'default.json')) {
-                await this.loadFile(translationFolder, 'default.json', true);
-            } else {
-                throw 'required default.json file not available in the translation folder...';
-            }
-
-            const languageFileName = lang + '.json';
-
-            if (translationFolderFiles.find(entry => {
-                return entry.name === languageFileName;
-            })) {
-                await this.loadFile(translationFolder, languageFileName, false);
-            }
+            await this.loadDefaultTranslations(translationFolderFiles, translationFolder);
+            await this.loadLanguageTranslations(translationFolderFiles, translationFolder);
 
             return true;
         } else {
@@ -121,6 +109,44 @@ class LocalizationHelper {
         }
     }
 
+    /**
+     * Loads the translations for the current language.
+     * @protected
+     * @param {fs.Entry[]} translationFolderFiles - the files in the translation folder
+     * @param {fs.Entry} translationFolder - the translation folder
+     * @return {Promise<void>} resolves on success, rejects on error
+     */
+    static async loadLanguageTranslations(translationFolderFiles, translationFolder) {
+        const languageFileName = lang + '.json';
+
+        if (translationFolderFiles.find(entry => {
+            return entry.name === languageFileName;
+        })) {
+            await this.loadFile(translationFolder, languageFileName, false);
+        }
+    }
+
+    /**
+     * Loads the default translations.
+     * @protected
+     * @param {fs.Entry[]} translationFolderFiles - the files in the translation folder
+     * @param {fs.Entry} translationFolder - the translation folder
+     * @return {Promise<void>} resolves on success, rejects on error
+     */
+    static async loadDefaultTranslations(translationFolderFiles, translationFolder) {
+        if (translationFolderFiles.find(entry => entry.name === 'default.json')) {
+            await this.loadFile(translationFolder, 'default.json', true);
+        } else {
+            throw 'required default.json file not available in the translation folder...';
+        }
+    }
+
+    /**
+     * Prepares (re-/) loading the translations, based on either the overrideLanguage or the current app language
+     * @param {string?} [translationFolderLocation='lang'] - the translation folder location
+     * @param {object} config - the configuration
+     * @return {string} the translation folder location, relative to the plugin folder
+     */
     static prepareLoad(translationFolderLocation, config) {
         LocalizationHelper.unload();
 
@@ -150,7 +176,7 @@ class LocalizationHelper {
      */
     static async loadFile(translationFolder, fileName, isDefault) {
         const defaultFile = await translationFolder.getEntry(fileName);
-        let result = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
+        let result = JSON.parse((await defaultFile.read({ format: fs.formats.utf8 })).toString());
         if (isDefault)
             defaultEntries = result;
         else
@@ -165,16 +191,27 @@ class LocalizationHelper {
      * @return {boolean | string} The value or false if it's not defined
      */
     static getNamespaced(object, key) {
-        if (Object.prototype.hasOwnProperty.call(object, key))
+        if (object.hasOwnProperty(key))
             return object[key];
         else {
-            for (let i = 1; i <= key.split('.').length + 1; i++) {
-                let newKey = key.split('.', i).join('.');
-                if (Object.prototype.hasOwnProperty.call(object, newKey))
-                    return this.getNamespaced(object[newKey], key.substring(newKey.length + 1, key.length));
-            }
-            return false;
+            return this.getNamespacedSplitByDots(object, key);
         }
+    }
+
+    /**
+     * Check properties of `obj` checking `key` parsed for dot notation
+     * @private
+     * @param {object} object - the object
+     * @param {string} key - the namespaced key (including `'.'` for namespacing)
+     * @return {boolean|string} - resolves with false if no match was found or the match, if found
+     */
+    static getNamespacedSplitByDots(object, key) {
+        for (let i = 1; i <= key.split('.').length + 1; i++) {
+            let newKey = key.split('.', i).join('.');
+            if (Object.prototype.hasOwnProperty.call(object, newKey))
+                return this.getNamespaced(object[newKey], key.substring(newKey.length + 1, key.length));
+        }
+        return false;
     }
 
     /**
