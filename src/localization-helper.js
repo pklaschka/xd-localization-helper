@@ -1,7 +1,30 @@
-/*
- * Copyright (c) 2018 by Pablo Klaschka
+/*!
+ * xd-localization-helper
+ *
+ * MIT License
+ *
+ * Copyright (c) 2018 Pablo Klaschka
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
+const application = require('application');
 const fs = require('uxp').storage;
 const lfs = fs.localFileSystem;
 
@@ -56,51 +79,82 @@ class LocalizationHelper {
      * (resolves to true if it was successful)
      */
     static async load(translationFolderLocation, config) {
+        translationFolderLocation = this.prepareLoad(translationFolderLocation, config);
+
+        // Actual logic
+        const pluginFolder = await lfs.getPluginFolder();
+
+        if (!(await pluginFolder.getEntries()).find(entry => entry.name === translationFolderLocation))
+            throw 'translationFolderLocation \'' + translationFolderLocation + '\' doesn\'t exist';
+
+        const translationFolder = await pluginFolder.getEntry(translationFolderLocation);
+        return await this.loadTranslations(translationFolder);
+    }
+
+    /**
+     * Loads the translations from the specified translationFolder.
+     * @protected
+     * @param {fs.Entry} translationFolder - the translation folder
+     * @return {Promise<boolean>} resolves with `true` on success and rejects on error.
+     */
+    static async loadTranslations(translationFolder) {
+        if (translationFolder.isFolder) {
+            const translationFolderFiles = await translationFolder.getEntries();
+
+            if (translationFolderFiles.find(entry => entry.name === 'default.json')) {
+                await this.loadFile(translationFolder, 'default.json', true);
+            } else {
+                throw 'required default.json file not available in the translation folder...';
+            }
+
+            const languageFileName = lang + '.json';
+
+            if (translationFolderFiles.find(entry => {
+                return entry.name === languageFileName;
+            })) {
+                await this.loadFile(translationFolder, languageFileName, false);
+            }
+
+            return true;
+        } else {
+            throw 'translationFolderLocation is not a folder';
+        }
+    }
+
+    static prepareLoad(translationFolderLocation, config) {
         LocalizationHelper.unload();
 
-        lang = require('application').appLanguage;
+        lang = application.appLanguage;
 
         // Dealing with parameters
         translationFolderLocation = translationFolderLocation || 'lang';
 
-        let options = Object.assign({
+        const options = Object.assign({
             overrideLanguage: null,
         }, config || {});
 
         lang = options.overrideLanguage ? options.overrideLanguage : lang;
+        return translationFolderLocation;
+    }
 
-        // Actual logic
-        try {
-            const pluginFolder = await lfs.getPluginFolder();
-
-            if (!(await pluginFolder.getEntries()).find(entry => entry.name === translationFolderLocation))
-                throw 'translationFolderLocation \'' + translationFolderLocation + '\' doesn\'t exist';
-
-            const translationFolder = await pluginFolder.getEntry(translationFolderLocation);
-
-            if (translationFolder.isFolder) {
-                const entries = await translationFolder.getEntries();
-
-                if (entries.find(entry => entry.name === 'default.json')) {
-                    const defaultFile = await translationFolder.getEntry('default.json');
-                    defaultEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
-                } else {
-                    throw 'required default.json file not available in the ' +
-                    'translation folder \''+translationFolderLocation+'\'...';
-                }
-
-                if (entries.find(entry => entry.name === lang + '.json')) {
-                    const defaultFile = await translationFolder.getEntry(lang + '.json');
-                    languageEntries = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
-                }
-
-                return true;
-            } else {
-                throw 'translationFolderLocation \'' + translationFolderLocation + '\' is not a folder';
-            }
-        } catch (e) {
-            throw 'Localization helper: Translations didn\'t load successfully: ' + e;
-        }
+    /**
+     * Loads a specific translation file from the translation folder
+     *
+     * Sets either `defaultEntries` or `languageEntries` to the result, if `isDefault` is `true` or `false`,
+     * respectively.
+     * @protected
+     * @param {fs.Folder} translationFolder - the folder with the translation files
+     * @param {string} fileName - the file name of the translation file
+     * @param {boolean} isDefault - whether the file should serve as "default entry"
+     * @return {Promise<void>} A promise that resolves if the file gets loaded or rejects on error.
+     */
+    static async loadFile(translationFolder, fileName, isDefault) {
+        const defaultFile = await translationFolder.getEntry(fileName);
+        let result = JSON.parse((await defaultFile.read({format: fs.formats.utf8})).toString());
+        if (isDefault)
+            defaultEntries = result;
+        else
+            languageEntries = result;
     }
 
     /**

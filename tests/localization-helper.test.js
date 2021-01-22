@@ -108,8 +108,7 @@ describe('Initializing', () => {
 
     test('throw with a wrong translations folder name', async done => {
         const loc = require(locationHelperLocation);
-        await expect(loc.load('langsTypo')).rejects.toMatch('Localization helper: Translations didn\'t ' +
-            'load successfully: translationFolderLocation \'langsTypo\' doesn\'t exist');
+        await expect(loc.load('langsTypo')).rejects.toMatch('translationFolderLocation \'langsTypo\' doesn\'t exist');
         done();
     });
 
@@ -121,8 +120,9 @@ describe('Initializing', () => {
         });
 
         const loc = require(locationHelperLocation);
-        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: ' +
-            'required default.json file not available in the translation folder \'lang\'...');
+        await expect(loc.load())
+            .rejects
+            .toMatch('required default.json file not available in the translation folder...');
         done();
     });
 
@@ -132,8 +132,7 @@ describe('Initializing', () => {
         });
 
         const loc = require(locationHelperLocation);
-        await expect(loc.load()).rejects.toMatch('Localization helper: Translations didn\'t load successfully: ' +
-            'translationFolderLocation \'lang\' is not a folder');
+        await expect(loc.load()).rejects.toMatch('translationFolderLocation is not a folder');
         done();
     });
 });
