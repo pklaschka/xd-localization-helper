@@ -6,7 +6,7 @@
   "types": "localization-helper.d.ts",
   "scripts": {
     "test": "npm run build && jest --coverage",
-    "build": "webpack --config webpack.config.js --mode production",
+    "build": "rollup -c rollup.config.js",
     "build:docs": "jsdoc2md ./src/localization-helper.js > docs/reference.md",
     "lint": "eslint src/localization-helper.js"
   },
@@ -43,7 +43,7 @@
     "eslint": "^7.0.0",
     "jest": "^26.0.0",
     "jsdoc-to-markdown": "^6.0.1",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^4.0.0"
+    "rollup": "^2.38.0",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }

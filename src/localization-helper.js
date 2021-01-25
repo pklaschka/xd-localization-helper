@@ -191,7 +191,7 @@ class LocalizationHelper {
      * @return {boolean | string} The value or false if it's not defined
      */
     static getNamespaced(object, key) {
-        if (object.hasOwnProperty(key))
+        if (Object.prototype.hasOwnProperty.call(object, key))
             return object[key];
         else {
             return this.getNamespacedSplitByDots(object, key);
