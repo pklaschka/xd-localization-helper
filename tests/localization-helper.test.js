@@ -43,7 +43,7 @@ class MockFolder {
     async getEntries() {
         let returnArray = [];
         for (let key in this.files)
-            if (this.files.hasOwnProperty(key))
+            if (Object.prototype.hasOwnProperty.call(this.files, key))
                 returnArray.push(this.files[key]);
         return returnArray;
     }
@@ -93,26 +93,23 @@ jest.mock('application', () => {
 
 
 describe('Initializing', () => {
-    test('be successful with a correct setup', async done => {
+    test('be successful with a correct setup', async () => {
         const loc = require(locationHelperLocation);
         await expect(loc.load()).resolves.toBeTruthy();
-        done();
     });
 
-    test('be successful without correct translations', async done => {
+    test('be successful without correct translations', async () => {
         mockApp.appLanguage = 'fr';
         const loc = require(locationHelperLocation);
         await expect(loc.load()).resolves.toBeTruthy();
-        done();
     });
 
-    test('throw with a wrong translations folder name', async done => {
+    test('throw with a wrong translations folder name', async () => {
         const loc = require(locationHelperLocation);
         await expect(loc.load('langsTypo')).rejects.toMatch('translationFolderLocation \'langsTypo\' doesn\'t exist');
-        done();
     });
 
-    test('throw if there\'s no default.json', async done => {
+    test('throw if there\'s no default.json', async () => {
         mockPluginFolder = new MockFolder('plugins', {
             lang: new MockFolder('lang', {
                 'de.json': new MockFile('de.json', '{"a":"Hallo Welt"}'),
@@ -123,17 +120,15 @@ describe('Initializing', () => {
         await expect(loc.load())
             .rejects
             .toMatch('required default.json file not available in the translation folder...');
-        done();
     });
 
-    test('throw if the lang folder is actually a file', async done => {
+    test('throw if the lang folder is actually a file', async () => {
         mockPluginFolder = new MockFolder('plugins', {
             lang: new MockFile('lang', 'some stuff')
         });
 
         const loc = require(locationHelperLocation);
         await expect(loc.load()).rejects.toMatch('translationFolderLocation is not a folder');
-        done();
     });
 });
 
@@ -148,41 +143,37 @@ describe('get()', () => {
         mockApp.appLanguage = 'de';
     });
 
-    test('Correct key, translated language => translated string', async done => {
+    test('Correct key, translated language => translated string', async () => {
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('de');
         expect(loc.get('a')).toBe('Hallo Welt');
-        done();
     });
 
-    test('Correct key, forced translated language => translated string', async done => {
+    test('Correct key, forced translated language => translated string', async () => {
         mockApp.appLanguage = 'fr';
         const loc = require(locationHelperLocation);
         await loc.load('lang', {overrideLanguage: 'de'});
         expect(loc.lang).toBe('de');
         expect(loc.get('a')).toBe('Hallo Welt');
         expect(loc.hasTranslation).toBe(true);
-        done();
     });
 
-    test('Correct key, forced non-translated language => default string', async done => {
+    test('Correct key, forced non-translated language => default string', async () => {
         mockApp.appLanguage = 'fr';
         const loc = require(locationHelperLocation);
         await loc.load('lang', {overrideLanguage: 'aa'});
         expect(loc.lang).toBe('aa');
         expect(loc.get('a')).toBe('Hello World');
-        done();
     });
 
-    test('Correct key, non-translated language => default string', async done => {
+    test('Correct key, non-translated language => default string', async () => {
         mockApp.appLanguage = 'fr';
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('fr');
         expect(loc.get('a')).toBe('Hello World');
         expect(loc.hasTranslation).toBe(false);
-        done();
     });
 
     test('Not initialized => throw error', () => {
@@ -192,11 +183,10 @@ describe('get()', () => {
             '\'await LocalizationHelper.load()\' before getting a string.');
     });
 
-    test('Incorrect key => throw error', async done => {
+    test('Incorrect key => throw error', async () => {
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(() => loc.get('b')).toThrow('Localization helper: String was not found, key: \'b\'');
-        done();
     });
 });
 
@@ -211,28 +201,25 @@ describe('Namespacing inside the JSON file', () => {
         mockApp.appLanguage = 'de';
     });
 
-    test('Flat namespace', async done => {
+    test('Flat namespace', async () => {
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('de');
         expect(loc.get('a.b')).toBe('String 1');
-        done();
     });
 
-    test('Indented namespace level 1', async done => {
+    test('Indented namespace level 1', async () => {
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('de');
         expect(loc.get('a.c')).toBe('String 2');
-        done();
     });
 
-    test('Indented namespace level 2', async done => {
+    test('Indented namespace level 2', async () => {
         const loc = require(locationHelperLocation);
         await loc.load();
         expect(loc.lang).toBe('de');
         expect(loc.get('a.d.e')).toBe('String 3');
         expect(() => loc.get('a.c.d.e')).toThrow('Localization helper: String was not found, key: \'a.c.d.e\'');
-        done();
     });
 });
